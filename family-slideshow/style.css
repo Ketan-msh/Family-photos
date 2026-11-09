@@ -1,0 +1,877 @@
+/* =====================================================================
+   FAMILY PHOTOS SLIDESHOW - STYLESHEET
+   Compatible with TV browsers (Chromium 56+)
+   No flex gap, no clamp(), no aspect-ratio, no CSS inset
+   ===================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: calc(9px + 0.65vw);
+  background-color: #0e0c0a;
+  color: #f4efe8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0e0c0a;
+  background-image: radial-gradient(circle at 50% 30%, #1c1712 0%, #0e0c0a 100%);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Hide mouse cursor when requested */
+body.hide-cursor,
+body.hide-cursor * {
+  cursor: none !important;
+}
+
+/* =====================================================================
+   SCREENS
+   ===================================================================== */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 250ms ease-in-out;
+}
+
+.screen.screen-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tv-container {
+  padding: 5vh 5vw;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100%;
+  padding: 5vh 5vw;
+}
+
+/* =====================================================================
+   LOADING & ERROR SCREENS
+   ===================================================================== */
+.spinner {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 4px solid rgba(240, 179, 94, 0.2);
+  border-top-color: #f0b35e;
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+  margin-bottom: 2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #f4efe8;
+  margin-bottom: 0.75rem;
+}
+
+.loading-subtitle {
+  font-size: 1.1rem;
+  color: #a99f93;
+}
+
+.error-icon {
+  margin-bottom: 1.5rem;
+}
+
+.error-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  font-weight: normal;
+  color: #f4efe8;
+  margin-bottom: 0.75rem;
+}
+
+.error-desc {
+  font-size: 1.15rem;
+  color: #a99f93;
+  max-width: 36rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.error-hint-box {
+  background-color: rgba(240, 179, 94, 0.1);
+  border: 1px solid rgba(240, 179, 94, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  color: #f0b35e;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 36rem;
+  margin-bottom: 2rem;
+  display: none;
+}
+
+.error-hint-box.show {
+  display: block;
+}
+
+/* =====================================================================
+   HOME SCREEN
+   ===================================================================== */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.home-header {
+  text-align: center;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+}
+
+.home-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: #f4efe8;
+  margin-bottom: 0.5rem;
+}
+
+.home-subtitle {
+  font-size: 1.15rem;
+  color: #a99f93;
+}
+
+.home-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 60rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.option-card {
+  flex: 1;
+  background-color: #17130f;
+  background-image: linear-gradient(145deg, #1f1a14 0%, #14100c 100%);
+  border: 2px solid rgba(240, 179, 94, 0.2);
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #f4efe8;
+  cursor: pointer;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+  margin: 0 1rem;
+}
+
+.option-card-icon {
+  margin-bottom: 1.5rem;
+}
+
+.option-card-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: #f4efe8;
+}
+
+.option-card-desc {
+  font-size: 1.05rem;
+  color: #a99f93;
+}
+
+.tv-hint {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #7b7267;
+  margin-top: 2.5vh;
+  margin-bottom: 1.5vh;
+}
+
+.home-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5vh;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-summary {
+  font-size: 1.05rem;
+  color: #a99f93;
+}
+
+.home-footer-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-footer-actions .action-btn {
+  margin-left: 0.75rem;
+}
+
+/* =====================================================================
+   BUTTONS & COMMON INTERACTIVE STYLES
+   ===================================================================== */
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.action-btn {
+  background-color: #1c1813;
+  border: 2px solid rgba(240, 179, 94, 0.25);
+  border-radius: 0.6rem;
+  padding: 0.75rem 1.4rem;
+  color: #f4efe8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.action-btn svg {
+  margin-right: 0.5rem;
+}
+
+.action-btn.btn-primary {
+  background-color: #272017;
+  border-color: #f0b35e;
+  color: #f0b35e;
+}
+
+.btn-back {
+  background-color: #1c1813;
+  border: 2px solid rgba(240, 179, 94, 0.25);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  color: #f4efe8;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  margin-right: 1.5rem;
+}
+
+.btn-back svg {
+  margin-right: 0.4rem;
+}
+
+/* =====================================================================
+   FOCUS & HOVER STATES (Spatial Navigation)
+   ===================================================================== */
+[data-nav]:focus,
+[data-nav].nav-focused,
+[data-nav]:hover {
+  outline: none;
+  border-color: #f0b35e !important;
+  box-shadow: 0 0 0 2px #f0b35e, 0 8px 24px rgba(240, 179, 94, 0.45) !important;
+  transform: scale(1.06) !important;
+  z-index: 10;
+}
+
+/* Keep subtle border on interactive items so focus doesn't shift layout */
+[data-nav] {
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+/* =====================================================================
+   ALBUMS SCREEN
+   ===================================================================== */
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  grid-gap: 1.8rem;
+  padding-bottom: 4vh;
+}
+
+.album-card {
+  background-color: #17130f;
+  border: 2px solid rgba(240, 179, 94, 0.15);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3:2 ratio via padding-top trick (no aspect-ratio!) */
+.album-card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 66.666%; /* 3:2 */
+  background-color: #1f1a14;
+  overflow: hidden;
+}
+
+.album-card-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-card-info {
+  padding: 1.1rem 1.25rem;
+}
+
+.album-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f4efe8;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-card-count {
+  font-size: 0.95rem;
+  color: #a99f93;
+}
+
+/* =====================================================================
+   SETTINGS SCREEN
+   ===================================================================== */
+.settings-list {
+  max-width: 58rem;
+  padding-bottom: 10vh;
+}
+
+.settings-group {
+  margin-bottom: 2rem;
+}
+
+.settings-label {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f4efe8;
+  margin-bottom: 0.75rem;
+}
+
+.settings-label-note {
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: #a99f93;
+  margin-left: 0.5rem;
+}
+
+.settings-pills {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.35rem;
+}
+
+.pill-btn {
+  background-color: #181410;
+  border: 2px solid rgba(240, 179, 94, 0.2);
+  border-radius: 2rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 1rem;
+  color: #a99f93;
+  cursor: pointer;
+  margin: 0.35rem;
+  transition: all 180ms ease;
+}
+
+.pill-btn.pill-selected {
+  background-color: #f0b35e;
+  border-color: #f0b35e;
+  color: #0e0c0a;
+  font-weight: 600;
+}
+
+/* =====================================================================
+   PLAYER SCREEN (Full Screen Slideshow)
+   ===================================================================== */
+#screen-player {
+  background-color: #000000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.player-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 1;
+  will-change: opacity;
+  pointer-events: none;
+}
+
+.player-layer.hidden-layer {
+  opacity: 0;
+  z-index: 0;
+  transition: none;
+}
+
+.player-layer.fade-in {
+  opacity: 1;
+  z-index: 3;
+  transition: opacity 1000ms ease-in-out;
+}
+
+.player-layer.active {
+  opacity: 1;
+  z-index: 2;
+  transition: none;
+}
+
+.player-layer.behind {
+  opacity: 1;
+  z-index: 1;
+  transition: none;
+}
+
+/* Blurred backdrop */
+.player-backdrop {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.45);
+  -webkit-filter: blur(28px) brightness(0.45);
+  transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+
+.player-no-blur .player-backdrop {
+  display: none !important;
+}
+
+/* Main Photo */
+.player-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  will-change: transform;
+}
+
+/* Gentle Zoom (Ken Burns) Keyframes */
+@keyframes kb-pan-1 {
+  0% { transform: scale(1) translate(0%, 0%); }
+  100% { transform: scale(1.07) translate(1.5%, 1%); }
+}
+
+@keyframes kb-pan-2 {
+  0% { transform: scale(1) translate(0%, 0%); }
+  100% { transform: scale(1.07) translate(-1.5%, -1%); }
+}
+
+@keyframes kb-pan-3 {
+  0% { transform: scale(1) translate(0%, 0%); }
+  100% { transform: scale(1.07) translate(1%, -1.5%); }
+}
+
+@keyframes kb-pan-4 {
+  0% { transform: scale(1) translate(0%, 0%); }
+  100% { transform: scale(1.07) translate(-1%, 1.5%); }
+}
+
+.player-img.kb-1 { animation: kb-pan-1 linear forwards; }
+.player-img.kb-2 { animation: kb-pan-2 linear forwards; }
+.player-img.kb-3 { animation: kb-pan-3 linear forwards; }
+.player-img.kb-4 { animation: kb-pan-4 linear forwards; }
+
+.player-paused .player-img {
+  animation-play-state: paused !important;
+}
+
+/* Bottom-left Caption */
+.player-caption {
+  position: absolute;
+  bottom: 5vh;
+  left: 5vw;
+  z-index: 20;
+  color: #f4efe8;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  transition: opacity 250ms ease;
+  max-width: 60vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-caption.caption-hidden {
+  opacity: 0;
+}
+
+/* Top-right Paused Badge */
+.player-paused-badge {
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+  z-index: 20;
+  background-color: rgba(14, 12, 10, 0.85);
+  border: 1px solid rgba(240, 179, 94, 0.5);
+  color: #f0b35e;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  transition: opacity 200ms ease;
+}
+
+.player-paused-badge.player-paused-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Center Toast */
+.player-toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  background-color: rgba(14, 12, 10, 0.92);
+  border: 1px solid rgba(240, 179, 94, 0.6);
+  border-radius: 0.8rem;
+  padding: 1.2rem 2.2rem;
+  color: #f4efe8;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms ease;
+  max-width: 80vw;
+}
+
+.player-toast.player-toast-hidden {
+  opacity: 0;
+  transform: translate(-50%, -46%);
+  pointer-events: none;
+}
+
+/* =====================================================================
+   PLAYER HUD (Controls Overlay)
+   ===================================================================== */
+.player-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: auto;
+  transition: opacity 250ms ease;
+}
+
+.player-hud.player-hud-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hud-top-bar {
+  padding: 5vh 5vw 3rem 5vw;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hud-top-left {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #f4efe8;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hud-top-right {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f0b35e;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hud-bottom-bar {
+  padding: 3rem 5vw 5vh 5vw;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Progress bar */
+.progress-bar-track {
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes progress-anim {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.progress-bar-fill {
+  width: 100%;
+  height: 100%;
+  background-color: #f0b35e;
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.progress-bar-fill.running {
+  animation: progress-anim linear forwards;
+}
+
+.player-paused .progress-bar-fill {
+  animation-play-state: paused !important;
+}
+
+/* HUD Buttons */
+.hud-buttons-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.hud-btn {
+  background-color: rgba(23, 19, 15, 0.85);
+  border: 2px solid rgba(240, 179, 94, 0.25);
+  border-radius: 0.6rem;
+  padding: 0.75rem 1.2rem;
+  color: #f4efe8;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.hud-btn svg {
+  margin-right: 0.45rem;
+}
+
+.hud-btn:hover,
+.hud-btn:focus,
+.hud-btn.nav-focused {
+  background-color: #272017;
+  border-color: #f0b35e;
+}
+
+.icon-hidden {
+  display: none !important;
+}
+
+/* =====================================================================
+   END OF TIMER OVERLAY
+   ===================================================================== */
+.player-end-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.88);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 250ms ease;
+}
+
+.player-end-overlay.player-end-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.end-panel {
+  background-color: #17130f;
+  border: 2px solid rgba(240, 179, 94, 0.4);
+  border-radius: 1rem;
+  padding: 3rem 4rem;
+  max-width: 36rem;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
+}
+
+.end-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #f4efe8;
+  margin-bottom: 0.75rem;
+}
+
+.end-desc {
+  font-size: 1.15rem;
+  color: #a99f93;
+  margin-bottom: 2rem;
+}
+
+.end-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.end-actions .action-btn {
+  margin: 0 0.6rem;
+}
+
+/* =====================================================================
+   RESPONSIVE LAYOUT (Mobile / screens under 700px)
+   ===================================================================== */
+@media (max-width: 700px) {
+  .home-options {
+    flex-direction: column;
+  }
+
+  .option-card {
+    margin: 0.6rem 0;
+    padding: 2rem 1.5rem;
+  }
+
+  .option-card-icon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .home-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-summary {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .home-footer-actions {
+    justify-content: center;
+  }
+
+  .albums-grid {
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-gap: 1rem;
+  }
+
+  /* HUD labels hidden on mobile (icons only) */
+  .hud-btn-label {
+    display: none !important;
+  }
+
+  .hud-btn {
+    padding: 0.75rem;
+    margin: 0 0.25rem;
+  }
+
+  .hud-btn svg {
+    margin-right: 0 !important;
+  }
+
+  .end-panel {
+    padding: 2rem 1.5rem;
+  }
+
+  .end-actions {
+    flex-direction: column;
+  }
+
+  .end-actions .action-btn {
+    margin: 0.5rem 0;
+  }
+}
