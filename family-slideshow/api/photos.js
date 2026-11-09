@@ -4,6 +4,7 @@
  */
 
 var DEFAULT_FOLDER_ID = '15otliIkybVKJrKDPUTKKi3_2J7JPzlvk';
+var DEFAULT_API_KEY = 'AIzaSyDkGhXhiqn92nXu-xWwvaF1aMPMluZ-8qk';
 
 function parsePhotoTime(file) {
   var meta = file.imageMediaMetadata;
@@ -115,7 +116,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  var apiKey = process.env.GOOGLE_API_KEY;
+  var apiKey = process.env.GOOGLE_API_KEY || DEFAULT_API_KEY;
   if (!apiKey || typeof apiKey !== 'string' || apiKey.trim() === '') {
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
